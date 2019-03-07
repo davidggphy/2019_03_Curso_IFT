@@ -7,12 +7,12 @@ We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a progr
 However, you can use any Python interpreter compatible with Jupyter notebooks.
 
 ### Anaconda
-- Download miniconda ***Python 3.7*** (a light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html.
+- Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html.
 - Installation instructions https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation.
 - Setup the conda env from the `env.yml` file with
 
     `conda env create -f env.yml`
-### Google Colab (Cloud)
+### Google Colab (Cloud, to be tested)
 Google has released its own flavour of Jupyter called Colab, which has free GPUs available.
 
 Here's how you can use it:
