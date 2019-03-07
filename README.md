@@ -1,7 +1,7 @@
 # A PHYSICIST'S INTRODUCTION TO MACHINE LEARNING
 Machine Learning PhD Course held at IFT (Madrid)
 
-http://asabiovera.wixsite.com/doctorado/advanced-1
+You can find the schedule in: http://asabiovera.wixsite.com/doctorado/advanced-1
 
 ## Setup
 We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a programming environment that runs in a web browser. 
@@ -9,11 +9,13 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 
 ### Anaconda
 - Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html.
-- Installation instructions https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation.
+- Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation.
 - Setup the conda env from the `env.yml` file with
     `conda env create -f env.yml`
 - Activate the environment with
     `conda activate ML_Course`
+- Open Jupyter with
+    `jupyter notebook`
 
 
 ### Google Colab (Cloud, to be tested)
