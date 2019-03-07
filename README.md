@@ -8,13 +8,13 @@ We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a progr
 However, you can use any Python interpreter compatible with Jupyter notebooks.
 
 ### Anaconda
-- Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html.
-- Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation.
-- Setup the conda env from the `env.yml` file with
+1. Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html.
+2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation.
+3. Setup the conda env from the `env.yml` file with
     `conda env create -f env.yml`
-- Activate the environment with
+4. Activate the environment with
     `conda activate ML_Course`
-- Open Jupyter with
+5. Open Jupyter with
     `jupyter notebook`
 
 
