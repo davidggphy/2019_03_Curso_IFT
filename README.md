@@ -10,8 +10,11 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 - Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html.
 - Installation instructions https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation.
 - Setup the conda env from the `env.yml` file with
-
     `conda env create -f env.yml`
+- Activate the environment with
+    `conda activate ML_Course`
+
+
 ### Google Colab (Cloud, to be tested)
 Google has released its own flavour of Jupyter called Colab, which has free GPUs available.
 
