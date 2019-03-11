@@ -7,7 +7,7 @@ You can find the schedule in: http://asabiovera.wixsite.com/doctorado/advanced-1
 We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a programming environment that runs in a web browser. 
 However, you can use any Python interpreter compatible with Jupyter notebooks.
 
-### Anaconda
+### Anaconda (Local)
 1. Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html
 2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation
 3. Setup the conda env from the `env.yml` file with
@@ -18,7 +18,7 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
     `jupyter notebook`
 
 
-### Google Colab (Cloud, to be tested)
+### Google Colab (Cloud)
 Google has released its own flavour of Jupyter called Colab, which has free GPUs available.
 
 Here's how you can use it:
