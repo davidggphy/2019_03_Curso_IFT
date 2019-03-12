@@ -7,7 +7,7 @@ You can find the schedule in: http://asabiovera.wixsite.com/doctorado/advanced-1
 We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a programming environment that runs in a web browser. 
 However, you can use any Python interpreter compatible with Jupyter notebooks.
 
-### Anaconda (Local)
+### Anaconda (Local, Load predefined env)
 1. Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html
 2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation
 3. Setup the conda env from the `env.yml` file with
@@ -15,6 +15,18 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 4. Activate the environment with
     `conda activate ML_Course`
 5. Open Jupyter with
+    `jupyter notebook`
+    
+### Anaconda (Local, Install your own packages)
+1. Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html
+2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation
+3. Create a new environment with
+    `conda env create -n ML_Course`
+4. Activate the environment with
+    `conda activate ML_Course`
+5. Install the required packages with pip
+    `pip install -r requirements.txt`
+6. Open Jupyter with
     `jupyter notebook`
 
 
