@@ -13,7 +13,7 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 3. Setup the conda env from the `env.yml` file with
     `conda create -f env.yml`
 4. Activate the environment with
-    `conda activate ML_Course`
+    `conda activate ML_Course` or `source activate ML_Course` 
 5. Open Jupyter with
     `jupyter notebook`
     
@@ -23,7 +23,7 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 3. Create a new environment with
     `conda create -n ML_Course`
 4. Activate the environment with
-    `conda activate ML_Course`
+    `conda activate ML_Course` or `source activate ML_Course` 
 5. Install the required packages with pip
     `pip install -r requirements.txt`
 6. Open Jupyter with
