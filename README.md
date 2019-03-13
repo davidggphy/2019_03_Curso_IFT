@@ -24,9 +24,10 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
     `conda create -n ML_Course`
 4. Activate the environment with
     `conda activate ML_Course` or `source activate ML_Course` 
-5. Install the required packages with pip
+5. `conda install pip graphviz`
+6. Install the required packages with pip
     `pip install -r requirements.txt`
-6. Open Jupyter with
+7. Open Jupyter with
     `jupyter notebook`
 
 
