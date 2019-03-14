@@ -46,5 +46,18 @@ You can find extra information about how to install Anaconda and a tutorial on [
 https://adgdt.github.io/2018-11-28-cftmat/.
 
 
+
+
+
 ## Contributing
 Contributions and issues are welcome. Thanks!
+
+## Issues
+
+### Graphviz executables not found. (Thanks to Eduardo García-Valdecasas)
+1 . Download and install graphviz-2.38.msi from
+https://graphviz.gitlab.io/_pages/Download/Download_windows.html
+
+2 . Set the path variable
+(a) Control Panel > System and Security > System > Advanced System Settings > Environment Variables > Path > Edit
+(b) add 'C:\Program Files (x86)\Graphviz2.38\bin'
