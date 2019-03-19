@@ -21,10 +21,6 @@
 import os
 
 # %%
-# ! pip install ipywidgets
-# ! jupyter nbextension enable --py widgetsnbextension
-
-# %%
 ##### GOOGLE COLAB ######
 if not os.path.exists('./decision_trees_utils.py'):
     ! wget https://raw.githubusercontent.com/davidggphy/2019_03_Curso_IFT/master/notebooks/01_classification/decision_trees_utils.py
@@ -32,23 +28,23 @@ if not os.path.exists('./plot_confusion_matrix.py'):
     ! wget https://raw.githubusercontent.com/davidggphy/2019_03_Curso_IFT/master/notebooks/01_classification/plot_confusion_matrix.py
 
 # %%
-from decision_trees_utils import cart_plot,multiple_cart_plots,print_cart
-from decision_trees_utils import number_of_splits
-from plot_confusion_matrix import plot_confusion_matrix,plot_confusion_matrix2
-from decision_trees_utils import tree_to_nodes
+# ! pip install ipywidgets
+# ! jupyter nbextension enable --py widgetsnbextension
 
 # %%
 # %matplotlib notebook
+
 # # %matplotlib inline
 import numpy as np
 import matplotlib.pyplot as plt
-import sklearn
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn import metrics
 import seaborn as sns
 sns.set()
 plt.style.use('seaborn-whitegrid')
+import sklearn
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
+from decision_trees_utils import print_cart
+from decision_trees_utils import tree_to_nodes
 
 # %% [markdown]
 # ## Creating and preprocessing the data
@@ -58,7 +54,7 @@ dic_data_A = {'n': 15 ,'mean': (0,2), 'cov' :((1,0),(0,2)), 'y' : 0 }  # RED
 dic_data_B = {'n': 15 ,'mean': (0,0), 'cov' :((3,0),(0,1)), 'y' : 1 }  # BLUE
 dic_data = {'A': dic_data_A, 'B' : dic_data_B }
 
-# We sample the points with numpy
+# We sample the points with numpy.random
 np.random.seed(1)
 samples = {key : np.random.multivariate_normal(dic['mean'], np.array(dic['cov']), dic['n']) 
            for key,dic in dic_data.items()}
@@ -69,10 +65,11 @@ Y = np.concatenate(tuple(dic['y']* np.ones(dic['n'], dtype='int')
 
 
 
-# Train Test Split
+# Train Test Split. 80% / 20%.
 X_train,X_test,Y_train, Y_test = train_test_split(X,Y,test_size = 0.2)
 
 # %%
+# We transform into coordinates to make plotting easier.
 colors = [
     "#%02x%02x%02x" % (int(r), int(g), int(b)) for r, g ,b  in 150*np.eye(3)[[0,2,1]][np.array(Y_train,dtype='int')]
 ]
@@ -91,8 +88,6 @@ fig = plt.figure(figsize=(5,5))
 ax = fig.add_subplot(111)
 ax.set_xlim(x0_range)
 ax.set_ylim(x1_range)
-# ax.xlim(x0_range)
-# ax.ylim(x1_range)
 # TRAIN
 ax.scatter(x0, x1, s = 17, 
           alpha=1, c=colors )
@@ -110,10 +105,8 @@ from sklearn.linear_model import LogisticRegression
 
 # %%
 clf_log = LogisticRegression(solver='lbfgs').fit(X_train,Y_train)
-print(sklearn.metrics.classification_report(Y_test,clf_log.predict(X_test)))
-
-# %%
-print(sklearn.metrics.classification_report(Y_train,clf_log.predict(X_train)))
+print('TRAIN SET\n---------\n',sklearn.metrics.classification_report(Y_train,clf_log.predict(X_train)))
+print('TEST SET\n--------\n',sklearn.metrics.classification_report(Y_test,clf_log.predict(X_test)))
 
 # %% [markdown]
 # We can extract the coefficients of the linear regression to plot the decision boundary
@@ -121,17 +114,16 @@ print(sklearn.metrics.classification_report(Y_train,clf_log.predict(X_train)))
 # %%
 # Coefficients of the linear regression's bondary. Bias and slopes
 bias = clf_log.intercept_[0]
-b0, b1 = tuple(clf_log.coef_[0])
+alpha0, alpha1 = tuple(clf_log.coef_[0])
 x_line = x0_range
-y_line = tuple(-(bias+b0*x)/b1 for x in x_line)
+y_line = tuple(-(bias+alpha0*x)/alpha1 for x in x_line)
 
 # %%
 fig = plt.figure(figsize=(5,5))
 ax = fig.add_subplot(111)
 ax.set_xlim(x0_range)
 ax.set_ylim(x1_range)
-# ax.xlim(x0_range)
-# ax.ylim(x1_range)
+
 # TRAIN
 ax.scatter(x0, x1, s = 17, 
           alpha=1, c=colors )
@@ -149,68 +141,77 @@ ax.figure.canvas.draw()
 # %%
 from sklearn import tree
 from decision_trees_utils import add_interacting_boundaries, add_boundaries
-clf = tree.DecisionTreeClassifier(criterion='gini').fit(X_train, Y_train)
+clf_gini = tree.DecisionTreeClassifier(criterion='gini').fit(X_train, Y_train)
 clf_ent = tree.DecisionTreeClassifier(criterion='entropy').fit(X_train, Y_train)
-clf1 = tree.DecisionTreeClassifier(min_samples_split=5, min_samples_leaf=3).fit(X_train, Y_train)
-clf2 = tree.DecisionTreeClassifier(max_depth=2).fit(X_train, Y_train)
-print(sklearn.metrics.classification_report(Y_test,clf.predict(X_test)))
+# clf1 = tree.DecisionTreeClassifier(min_samples_split=5, min_samples_leaf=3).fit(X_train, Y_train)
+# clf2 = tree.DecisionTreeClassifier(max_depth=2).fit(X_train, Y_train)
+print('TRAIN SET\n---------\n',sklearn.metrics.classification_report(Y_train,clf_gini.predict(X_train)))
+print('TEST SET\n---------\n',sklearn.metrics.classification_report(Y_test,clf_gini.predict(X_test)))
+
+# %%
+print_cart(clf_gini)
 
 # %%
 fig, ax = plt.subplots(figsize=(5,5))
 
+# AXES LIMITS
 ax.set_xlim(x0_range)
 ax.set_ylim(x1_range)
 
-
-ax.scatter(x0, x1, s = 17, # radius=radii,
+# TRAIN
+ax.scatter(x0, x1, s = 17, 
           alpha=1, c=colors )
-ax.scatter(x0_test, x1_test, s = 17, # radius=radii,
+# TEST
+ax.scatter(x0_test, x1_test, s = 17, 
           alpha=0.3, c=colors_test )
 
-# Counts the number of elements that the plot has w/o including the boundaries
-n_collections_min = len(ax.collections)
-ax.figure.canvas.draw()
+# ax.figure.canvas.draw()
 
-add_boundaries(ax,clf)
-
-# %%
-print_cart(clf)
+# DECISSION TREE BOUNDARIES
+add_boundaries(ax,clf_gini)
 
 # %%
 fig, ax = plt.subplots(figsize=(5,5))
 
+# AXES LIMITS
 ax.set_xlim(x0_range)
 ax.set_ylim(x1_range)
 
-
-ax.scatter(x0, x1, s = 17, # radius=radii,
+# TRAIN
+ax.scatter(x0, x1, s = 17, 
           alpha=1, c=colors )
-ax.scatter(x0_test, x1_test, s = 17, # radius=radii,
+# TEST
+ax.scatter(x0_test, x1_test, s = 17, 
           alpha=0.3, c=colors_test )
 
-# Counts the number of elements that the plot has w/o including the boundaries
-n_collections_min = len(ax.collections)
-ax.figure.canvas.draw()
+# ax.figure.canvas.draw()
 
+# DECISSION TREE BOUNDARIES
 add_boundaries(ax,clf_ent)
 
+# %% [markdown]
+# Different criteria change the decision boundaries.
+#
+# We can see how the algorithm works exploring how the boundaries are created step by step.
+
 # %%
 fig, ax = plt.subplots(figsize=(5,5))
 
+# AXES LIMITS
 ax.set_xlim(x0_range)
 ax.set_ylim(x1_range)
 
-
-ax.scatter(x0, x1, s = 17, # radius=radii,
+# TRAIN
+ax.scatter(x0, x1, s = 17, 
           alpha=1, c=colors )
-ax.scatter(x0_test, x1_test, s = 17, # radius=radii,
+# TEST
+ax.scatter(x0_test, x1_test, s = 17, 
           alpha=0.3, c=colors_test )
 
-# Counts the number of elements that the plot has w/o including the boundaries
-n_collections_min = len(ax.collections)
-ax.figure.canvas.draw()
+# ax.figure.canvas.draw()
 
-add_interacting_boundaries(ax,clf)
+# DECISSION TREE BOUNDARIES
+add_interacting_boundaries(ax,clf_gini)
 
 # %% [markdown]
 # ## Some lessons
@@ -300,27 +301,11 @@ def train_decision_tree(X, Y, class_values = [0,1], criterion='entropy', min_sam
     return NestedNode(feature, value, left_node, right_node)
 
 
-# %%
-fig = plt.figure(figsize=(5,5))
-ax = fig.add_subplot(111)
-ax.set_xlim(x0_range)
-ax.set_ylim(x1_range)
-# ax.xlim(x0_range)
-# ax.ylim(x1_range)
-# TRAIN
-# ax.scatter(x0, x1, s = 17, 
-#           alpha=1, c=colors )
-# TEST
-ax.scatter(x0_test, x1_test, s = 17, 
-          alpha=1, c=colors_test )
-
-ax.figure.canvas.draw()
-
 # %% [markdown]
 # Let's apply it
 
 # %%
-train_decision_tree(X_train,Y_train)
+train_decision_tree(X_train,Y_train, criterion='entropy')
 
 # %% [markdown]
 # We can compare it with the sklearn one
