@@ -50,10 +50,10 @@ import seaborn as sns
 sns.set()
 plt.style.use('seaborn-whitegrid')
 
-# %% [markdown] {"heading_collapsed": true}
+# %% [markdown]
 # ## Creating and preprocessing the data
 
-# %% {"hidden": true}
+# %%
 dic_data_A = {'n': 15 ,'mean': (0,2), 'cov' :((1,0),(0,2)), 'y' : 0 }  # RED
 dic_data_B = {'n': 15 ,'mean': (0,0), 'cov' :((3,0),(0,1)), 'y' : 1 }  # BLUE
 dic_data = {'A': dic_data_A, 'B' : dic_data_B }
@@ -72,7 +72,7 @@ Y = np.concatenate(tuple(dic['y']* np.ones(dic['n'], dtype='int')
 # Train Test Split
 X_train,X_test,Y_train, Y_test = train_test_split(X,Y,test_size = 0.2)
 
-# %% {"hidden": true}
+# %%
 colors = [
     "#%02x%02x%02x" % (int(r), int(g), int(b)) for r, g ,b  in 150*np.eye(3)[[0,2,1]][np.array(Y_train,dtype='int')]
 ]
@@ -86,7 +86,7 @@ x1 = X_train[:,1]
 x0_test = X_test[:,0] 
 x1_test = X_test[:,1] 
 
-# %% {"hidden": true}
+# %%
 fig = plt.figure(figsize=(5,5))
 ax = fig.add_subplot(111)
 ax.set_xlim(x0_range)
@@ -212,10 +212,10 @@ ax.figure.canvas.draw()
 
 add_interacting_boundaries(ax,clf)
 
-# %% [markdown] {"heading_collapsed": true}
+# %% [markdown]
 # ## Some lessons
 
-# %% [markdown] {"hidden": true}
+# %% [markdown]
 # **Properties:**
 # - The decision tree behaves as a nested set of if else conditions.
 # - Interpretable (at least the first nodes)
@@ -247,50 +247,74 @@ class Node(namedtuple('Node', 'feature, threshold, left, right')):
     pass
 
 def entropy(n_classes): 
+    # We have to avoid having a left/right part with no elements
+    # The number does not matter, since it will be multiplied by prob_right/left = 0.
+    if np.sum(n_classes)==0:
+        return 9999999.
     probs = n_classes/np.sum(n_classes)
-    ent = -np.sum(probs * np.log2(probs+1e-10) )
+    # Regularize null probabilities
+    probs = probs[probs > 0.]
+    ent = -np.sum(probs * np.log2(probs) )
     return ent
 
-def get_best_split(X, Y, class_values = [0,1]):
+
+def get_best_split(X, Y, class_values = [0,1], criterion='entropy'):
     best_split = None
-    best_entropy = 999.
+    best_criterion = 9999999.
     # Column vector, we will need it to broadcast later
     class_values = np.array(class_values).reshape((1,-1))
-    
     for feature, values_feature in enumerate(X.T): # feature is the string naming each input feature
         values_sorted = np.sort(values_feature)
-#         column = x[feature] # This is the array of the values
         for index, value in enumerate(values_sorted[:-1]):
             # LEFT PART, <= value
-            n_classes = np.sum((Y_train[X_train[:,0]<=value].reshape((-1,1)) == class_values),axis=0)
-            prob_left = np.sum(n_classes)/Y.size
-            ent_left = entropy(n_classes)
+            n_classes_left = np.sum((Y[X[:,feature] <= value].reshape((-1,1)) == class_values),axis=0)
+            prob_left = np.sum(n_classes_left)/Y.size
+            if criterion=='entropy':
+                criterion_left = entropy(n_classes_left)
+                
             # RIGTH PART, > value
-            n_classes = np.sum((Y_train[X_train[:,0] > value].reshape((-1,1)) == class_values),axis=0)
-            prob_right = np.sum(n_classes)/Y.size
-            ent_right = entropy(n_classes)
-            ent_split = prob_left * ent_left + prob_right * ent_right 
-            if ent_split < best_entropy:
+            n_classes_right = np.sum((Y[X[:,feature] > value].reshape((-1,1)) == class_values),axis=0)
+            prob_right = np.sum(n_classes_right)/Y.size
+            if criterion=='entropy':
+                criterion_right = entropy(n_classes_right)
+            
+            criterion_split = prob_left * criterion_left + prob_right * criterion_right 
+            
+            if criterion_split < best_criterion:
                 best_split = (feature, (value+values_sorted[index+1])/2) 
-                best_entropy = ent_split
+                best_criterion = criterion_split
     return best_split
 
-def train_decision_tree(X, Y, class_values = [0,1], min_samples_leaf=1):
-    feature, value = get_best_split(X, Y, class_values= class_values)
+def train_decision_tree(X, Y, class_values = [0,1], criterion='entropy', min_samples_leaf=1):
+    feature, value = get_best_split(X, Y, class_values= class_values, criterion=criterion)
     X_left, Y_left = X[X[:,feature] <= value], Y[X[:,feature] <= value]
-#     x_left, y_left = x[x[feature] < value], y[x[feature] < value] 
     if (np.unique(Y_left).size > 1)and(Y_left.size > min_samples_leaf):
         left_node = train_decision_tree(X_left, Y_left,class_values=class_values, min_samples_leaf=min_samples_leaf) 
     else:
         left_node = None
     X_right, Y_right = X[X[:,feature] > value], Y[X[:,feature] > value]
-#     x_right, y_right = x[x[feature] >= value], y[x[feature] >= value] 
     if (np.unique(Y_right).size > 1)and(Y_right.size > min_samples_leaf):
         right_node = train_decision_tree(X_right, Y_right,class_values=class_values, min_samples_leaf=min_samples_leaf) 
     else:
         right_node = None
     return NestedNode(feature, value, left_node, right_node)
 
+
+# %%
+fig = plt.figure(figsize=(5,5))
+ax = fig.add_subplot(111)
+ax.set_xlim(x0_range)
+ax.set_ylim(x1_range)
+# ax.xlim(x0_range)
+# ax.ylim(x1_range)
+# TRAIN
+# ax.scatter(x0, x1, s = 17, 
+#           alpha=1, c=colors )
+# TEST
+ax.scatter(x0_test, x1_test, s = 17, 
+          alpha=1, c=colors_test )
+
+ax.figure.canvas.draw()
 
 # %% [markdown]
 # Let's apply it
@@ -303,26 +327,21 @@ train_decision_tree(X_train,Y_train)
 
 # %%
 clf_ent = sklearn.tree.DecisionTreeClassifier(criterion='entropy').fit(X_train,Y_train)
-tree_to_nodes(clf_ent)
+tree_to_nodes(clf_ent,feature_names=[0,1])
 
 
 # %% [markdown]
 # ## Exercise: 
 #
-# Implement the Decission Tree Classifier using the gini index instead of the entropy
+# Implement the Decission Tree Classifier using the gini index instead of the entropy and compare with the sklearn solution.
 
 # %%
-def gini(a, b): 
+def gini(n_classes): 
     ### TODO
     return gin
 
 
 # %%
-def gini(n_classes): 
-    probs = n_classes/np.sum(n_classes)
-    gini = 1-np.sum(np.power(probs,2 ) )
-    return gini
-
 
 # %% [markdown] {"heading_collapsed": true}
 # ## Another implementation
