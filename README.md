@@ -13,7 +13,7 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 1. Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html
 2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation
 3. Setup the conda env from the `env.yml` file with: 
-    `conda create -f env.yml`
+    `conda create -f env.yml python=3.6`
 4. Activate the environment with: 
     - Windows: `activate ML_Course`
     - Linux, macOS: `conda activate ML_Course` or `source activate ML_Course` 
