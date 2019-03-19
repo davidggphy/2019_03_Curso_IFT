@@ -44,7 +44,7 @@ Here's how you can use it:
 2. Click **GITHUB** tab, paste https://github.com/davidggphy/2019_03_Curso_IFT and press Enter
 3. Choose the notebook you want to open *.ipynb
 4. Click **File -> Save a copy in Drive...** to save your progress in Google Drive
-5. Click **Runtime -> Change runtime type** and select **GPU** in Hardware accelerator box
+5. Optional: Click **Runtime -> Change runtime type** and select **GPU** in Hardware accelerator box
 
 ## Warm-up
 You can find extra information about how to install Anaconda and a tutorial on [python basics](https://adgdt.github.io/2018-11-28-cftmat-python-novice-inflammation) in
