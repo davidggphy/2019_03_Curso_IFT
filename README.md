@@ -3,6 +3,8 @@ Machine Learning PhD Course held at IFT (Madrid)
 
 You can find the schedule in: http://asabiovera.wixsite.com/doctorado/advanced-1
 
+Contact email: david.gg.phy@gmail.com
+
 ## Setup
 We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a programming environment that runs in a web browser. 
 However, you can use any Python interpreter compatible with Jupyter notebooks.
@@ -13,7 +15,8 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 3. Setup the conda env from the `env.yml` file with: 
     `conda create -f env.yml`
 4. Activate the environment with: 
-    `conda activate ML_Course` or `source activate ML_Course` 
+    - Windows: `activate ML_Course`
+    - Linux, macOS: `conda activate ML_Course` or `source activate ML_Course` 
 5. Open Jupyter with: 
     `jupyter notebook`
     
@@ -22,8 +25,9 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation
 3. Create a new environment with
     `conda create -n ML_Course python=3.6`
-4. Activate the environment with
-    `conda activate ML_Course` or `source activate ML_Course` 
+4. Activate the environment with: 
+    - Windows: `activate ML_Course`
+    - Linux, macOS: `conda activate ML_Course` or `source activate ML_Course` 
 5. Install the following packages with conda: 
     `conda install pip graphviz`
 6. Install the required packages with pip: 
@@ -55,7 +59,7 @@ Contributions and issues are welcome. Thanks!
 
 ## Issues
 
-### Graphviz executables not found. (Thanks to Eduardo García-Valdecasas)
+### Graphviz executables not found. Windows. (Thanks to Eduardo García-Valdecasas)
 1. Download and install graphviz-2.38.msi from
 https://graphviz.gitlab.io/_pages/Download/Download_windows.html
 2. Set the path variable
