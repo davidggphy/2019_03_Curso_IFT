@@ -18,11 +18,18 @@
 # %%
 # %load_ext autoreload
 # %autoreload 2
+import os
+
+# %%
+# ! pip install ipywidgets
+# ! jupyter nbextension enable --py widgetsnbextension
 
 # %%
 ##### GOOGLE COLAB ######
-! wget https://raw.githubusercontent.com/davidggphy/2019_03_Curso_IFT/master/notebooks/01_classification/decision_trees_utils.py
-! wget https://raw.githubusercontent.com/davidggphy/2019_03_Curso_IFT/master/notebooks/01_classification/plot_confusion_matrix.py
+if not os.path.exists('./decision_trees_utils.py'):
+    ! wget https://raw.githubusercontent.com/davidggphy/2019_03_Curso_IFT/master/notebooks/01_classification/decision_trees_utils.py
+if not os.path.exists('./plot_confusion_matrix.py'):
+    ! wget https://raw.githubusercontent.com/davidggphy/2019_03_Curso_IFT/master/notebooks/01_classification/plot_confusion_matrix.py
 
 # %%
 from decision_trees_utils import cart_plot,multiple_cart_plots,print_cart
@@ -40,70 +47,60 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
 import seaborn as sns
+sns.set()
+plt.style.use('seaborn-whitegrid')
 
-# %%
-import matplotlib as mpl
-from bokeh.plotting import figure, show, output_notebook
-from bokeh.models import Range1d
-output_notebook()
+# %% [markdown] {"heading_collapsed": true}
+# ## Creating and preprocessing the data
 
-# %% [markdown]
-# ## Creating the data
-
-# %%
-npoints1 = 40 # BLUE
-npoints2 = 30 # RED
-
-# Mean value and covariance matrices of the two classes
-mu_vec1 = np.array([0,2])
-cov_mat1 = np.array([[1,0],[0,4]])
-mu_vec2 = np.array([3.5,0])
-cov_mat2 = np.array([[3,0],[0,1]])
+# %% {"hidden": true}
+dic_data_A = {'n': 15 ,'mean': (0,2), 'cov' :((1,0),(0,2)), 'y' : 0 }  # RED
+dic_data_B = {'n': 15 ,'mean': (0,0), 'cov' :((3,0),(0,1)), 'y' : 1 }  # BLUE
+dic_data = {'A': dic_data_A, 'B' : dic_data_B }
 
 # We sample the points with numpy
-np.random.seed(0)
-x1_samples = np.random.multivariate_normal(mu_vec1, cov_mat1, npoints1)
-mu_vec1 = mu_vec1.reshape(1,2).T # to 1-col vector
-x2_samples = np.random.multivariate_normal(mu_vec2, cov_mat2, npoints2)
-mu_vec2 = mu_vec2.reshape(1,2).T
-
-X = np.vstack( (x1_samples,x2_samples)  )
-Y = np.hstack((np.ones(len(x2_samples)),np.zeros(len(x1_samples))))
-
-
-xrange = (X[:,0].min()-0.5,X[:,0].max()+0.5)
-yrange = (X[:,1].min()-0.5,X[:,1].max()+0.5)
+np.random.seed(1)
+samples = {key : np.random.multivariate_normal(dic['mean'], np.array(dic['cov']), dic['n']) 
+           for key,dic in dic_data.items()}
+     
+X = np.concatenate(tuple(samples[key] for key in dic_data.keys() ),axis=0)
+Y = np.concatenate(tuple(dic['y']* np.ones(dic['n'], dtype='int') 
+                         for key,dic in dic_data.items() ), axis=0)
 
 
 
 # Train Test Split
 X_train,X_test,Y_train, Y_test = train_test_split(X,Y,test_size = 0.2)
 
-# %%
-x = X_train[:,1] 
-y = X_train[:,0] 
+# %% {"hidden": true}
 colors = [
     "#%02x%02x%02x" % (int(r), int(g), int(b)) for r, g ,b  in 150*np.eye(3)[[0,2,1]][np.array(Y_train,dtype='int')]
 ]
-x_test = X_test[:,0] 
-y_test = X_test[:,1] 
 colors_test = [
     "#%02x%02x%02x" % (int(r), int(g), int(b)) for r, g ,b  in 150*np.eye(3)[[0,2,1]][np.array(Y_test,dtype='int')]
 ]
+x0_range = (X[:,0].min()-1,X[:,0].max()+1)
+x1_range = (X[:,1].min()-1,X[:,1].max()+1)
+x0 = X_train[:,0] 
+x1 = X_train[:,1] 
+x0_test = X_test[:,0] 
+x1_test = X_test[:,1] 
 
-# %%
-p = figure()
-p.x_range = Range1d(xrange[0],xrange[1])
-p.y_range = Range1d(yrange[0],yrange[1])
+# %% {"hidden": true}
+fig = plt.figure(figsize=(5,5))
+ax = fig.add_subplot(111)
+ax.set_xlim(x0_range)
+ax.set_ylim(x1_range)
+# ax.xlim(x0_range)
+# ax.ylim(x1_range)
 # TRAIN
-p.scatter(x, y, radius = 0.07, # radius=radii,
-          fill_alpha=0.8, fill_color = colors, # fill_color=colors, 
-          line_color=None, )
+ax.scatter(x0, x1, s = 17, 
+          alpha=1, c=colors )
 # TEST
-p.scatter(x_test, y_test, radius = 0.07, # radius=radii,
-          fill_alpha=0.4, fill_color = colors_test, # fill_color=colors, 
-          line_color=None)
-show(p)
+ax.scatter(x0_test, x1_test, s = 17, 
+          alpha=0.3, c=colors_test )
+
+ax.figure.canvas.draw()
 
 # %% [markdown]
 # ## Logistic Regression with sklearn
@@ -112,88 +109,113 @@ show(p)
 from sklearn.linear_model import LogisticRegression
 
 # %%
-classifier = LogisticRegression(solver='lbfgs')
-classifier.fit(X_train,Y_train)
-
-# %%
-classifier.predict([[0,2]])
-
-# %%
-classifier.predict(X_test)
-
-# %%
 clf_log = LogisticRegression(solver='lbfgs').fit(X_train,Y_train)
-
+print(sklearn.metrics.classification_report(Y_test,clf_log.predict(X_test)))
 
 # %%
-b0, b1 = tuple(clf_log.coef_[0])
+print(sklearn.metrics.classification_report(Y_train,clf_log.predict(X_train)))
 
 # %% [markdown]
 # We can extract the coefficients of the linear regression to plot the decision boundary
 
 # %%
+# Coefficients of the linear regression's bondary. Bias and slopes
+bias = clf_log.intercept_[0]
 b0, b1 = tuple(clf_log.coef_[0])
-p1 = (xrange[0],b0+b1*xrange[0]) # x,y point
-p2 = (xrange[1],b0+b1*xrange[1]) # x,y point
-line = [list(x) for x in zip(p1,p2)] # This defines the line
+x_line = x0_range
+y_line = tuple(-(bias+b0*x)/b1 for x in x_line)
 
 # %%
-p = figure()
-p.x_range = Range1d(xrange[0],xrange[1])
-p.y_range = Range1d(yrange[0],yrange[1])
+fig = plt.figure(figsize=(5,5))
+ax = fig.add_subplot(111)
+ax.set_xlim(x0_range)
+ax.set_ylim(x1_range)
+# ax.xlim(x0_range)
+# ax.ylim(x1_range)
 # TRAIN
-p.scatter(x, y, radius = 0.07, # radius=radii,
-          fill_alpha=0.7, fill_color = colors, # fill_color=colors, 
-          line_color=None, )
+ax.scatter(x0, x1, s = 17, 
+          alpha=1, c=colors )
 # TEST
-p.scatter(x_test, y_test, radius = 0.07, # radius=radii,
-          fill_alpha=0.1, fill_color = colors_test, # fill_color=colors, 
-          line_color=None)
+ax.scatter(x0_test, x1_test, s = 17, 
+          alpha=0.3, c=colors_test )
 # LINE
-p.line(line[0],line[1], line_width=2, line_color = 'black')
-show(p)
+ax.plot(x_line,y_line, c='black')
+# PLOT ALL
+ax.figure.canvas.draw()
 
 # %% [markdown]
 # ## Classification Decision Tree with Sklearn
 
 # %%
 from sklearn import tree
+from decision_trees_utils import add_interacting_boundaries, add_boundaries
 clf = tree.DecisionTreeClassifier(criterion='gini').fit(X_train, Y_train)
-clf1 = tree.DecisionTreeClassifier(min_samples_split=5).fit(X_train, Y_train)
-clf2 = tree.DecisionTreeClassifier(max_depth=4).fit(X_train, Y_train)
+clf_ent = tree.DecisionTreeClassifier(criterion='entropy').fit(X_train, Y_train)
+clf1 = tree.DecisionTreeClassifier(min_samples_split=5, min_samples_leaf=3).fit(X_train, Y_train)
+clf2 = tree.DecisionTreeClassifier(max_depth=2).fit(X_train, Y_train)
+print(sklearn.metrics.classification_report(Y_test,clf.predict(X_test)))
 
 # %%
-clf = tree.DecisionTreeClassifier(criterion='gini').fit(X_train, Y_train)
+fig, ax = plt.subplots(figsize=(5,5))
 
-# %% [markdown]
-# ### Plotting the final decision boundaries
+ax.set_xlim(x0_range)
+ax.set_ylim(x1_range)
 
-# %%
-# radii = np.random.random(size=N) * 1.5
-# colors = [
-#     "#%02x%02x%02x" % (int(r), int(g), int(b)) for r, g, b, _ in 255*mpl.cm.viridis(mpl.colors.Normalize()(radii))
-# ]
-TOOLS="hover,crosshair,pan,wheel_zoom,zoom_in,zoom_out,box_zoom,undo,redo,reset,tap,save,box_select,poly_select,lasso_select,"
 
-p = figure(tools=TOOLS)
-# TRAIN
-p.scatter(x, y, radius = 0.07, # radius=radii,
-          fill_alpha=0.7, fill_color = colors, # fill_color=colors, 
-          line_color=None, )
-# TEST
-p.scatter(x_test, y_test, radius = 0.07, # radius=radii,
-          fill_alpha=0.1, fill_color = colors_test, # fill_color=colors, 
-          line_color=None)
+ax.scatter(x0, x1, s = 17, # radius=radii,
+          alpha=1, c=colors )
+ax.scatter(x0_test, x1_test, s = 17, # radius=radii,
+          alpha=0.3, c=colors_test )
 
-cart_plot(clf, xrange,yrange,feature_names=['X0','X1'],plot=p)
+# Counts the number of elements that the plot has w/o including the boundaries
+n_collections_min = len(ax.collections)
+ax.figure.canvas.draw()
+
+add_boundaries(ax,clf)
 
 # %%
-clf.feature_importances_
+print_cart(clf)
 
 # %%
-print_cart(clf,feature_names=['X0','X1'])
+fig, ax = plt.subplots(figsize=(5,5))
 
-# %% [markdown]
+ax.set_xlim(x0_range)
+ax.set_ylim(x1_range)
+
+
+ax.scatter(x0, x1, s = 17, # radius=radii,
+          alpha=1, c=colors )
+ax.scatter(x0_test, x1_test, s = 17, # radius=radii,
+          alpha=0.3, c=colors_test )
+
+# Counts the number of elements that the plot has w/o including the boundaries
+n_collections_min = len(ax.collections)
+ax.figure.canvas.draw()
+
+add_boundaries(ax,clf_ent)
+
+# %%
+fig, ax = plt.subplots(figsize=(5,5))
+
+ax.set_xlim(x0_range)
+ax.set_ylim(x1_range)
+
+
+ax.scatter(x0, x1, s = 17, # radius=radii,
+          alpha=1, c=colors )
+ax.scatter(x0_test, x1_test, s = 17, # radius=radii,
+          alpha=0.3, c=colors_test )
+
+# Counts the number of elements that the plot has w/o including the boundaries
+n_collections_min = len(ax.collections)
+ax.figure.canvas.draw()
+
+add_interacting_boundaries(ax,clf)
+
+# %% [markdown] {"heading_collapsed": true}
+# ## Some lessons
+
+# %% [markdown] {"hidden": true}
 # **Properties:**
 # - The decision tree behaves as a nested set of if else conditions.
 # - Interpretable (at least the first nodes)
@@ -215,129 +237,73 @@ print_cart(clf,feature_names=['X0','X1'])
 #
 
 # %% [markdown]
-# ## Ipywidgets
-
-# %% [markdown]
-# For the following, Ipywidgets must be installed and properly configured in jupyter.
-
-# %%
-! pip install ipywidgets
-! jupyter nbextension enable --py widgetsnbextension
-
-# %%
-import ipywidgets as widgets
-from ipywidgets import interact, interact_manual
-from bokeh.models import LassoSelectTool,WheelZoomTool,SaveTool,CrosshairTool,HoverTool,PanTool,TapTool
-
-# %%
-n_splits = number_of_splits(clf)
-
-
-# %%
-@interact
-def show_articles_more_than(step=(0,n_splits,1)):
-    colors = [
-    "#%02x%02x%02x" % (int(r), int(g), int(b)) for r, g ,b  in 150*np.eye(3)[[0,2,1]][np.array(Y_train,dtype='int')]
-]
-    l_plots = multiple_cart_plots(clf, xrange,yrange,feature_names=['X0','X1'])
-    plot = l_plots[step]
-    plot.scatter(x, y, radius = 0.07, # radius=radii,
-          fill_alpha=0.6, fill_color = colors, # fill_color=colors, 
-          line_color=None)
-    plot.x_range = Range1d(xrange[0],xrange[1])
-    plot.y_range = Range1d(yrange[0],yrange[1])
-    plot.add_tools(CrosshairTool())
-    plot.add_tools(HoverTool())
-    plot.add_tools(TapTool())
-    show(plot)
-    return None
-
-# %% [markdown]
 # ## Decision Tree from scratch
 
 # %%
 from collections import namedtuple
-class Node(namedtuple('Node', 'feature, threshold, left_node, right_node')):
+class NestedNode(namedtuple('NestedNode', 'feature, threshold, left_node, right_node')):
+    pass
+class Node(namedtuple('Node', 'feature, threshold, left, right')):
     pass
 
-
-# %%
-import math
-def entropy(a, b): 
-    total = a + b
-    prob_a = a / total
-    prob_b = b / total
-    ent = - prob_a * math.log(prob_a+1e-10, 2) - prob_b * math.log(prob_b+1e-10, 2)
+def entropy(n_classes): 
+    probs = n_classes/np.sum(n_classes)
+    ent = -np.sum(probs * np.log2(probs+1e-10) )
     return ent
 
-
-# %%
-def get_best_split(x, y, class_a_value=0, class_b_value=1):
+def get_best_split(X, Y, class_values = [0,1]):
     best_split = None
-    best_entropy = 1.
-    for feature in x.columns.values: # feature is the string naming each input feature
-        column = x[feature] # This is the array of the values
-        for value in column:
-            a = y[column < value] == class_a_value 
-            b = y[column < value] == class_b_value
-            na = np.sum(a)
-            nb = np.sum(b)
-            left_weight = (na + nb) / len(y) 
-            left_entropy = entropy(na, nb)
-            a = y[column >= value] == class_a_value 
-            b = y[column >= value] == class_b_value 
-            na = np.sum(a)
-            nb = np.sum(b)
-            right_weight = (na + nb) / len(y) 
-            right_entropy = entropy(na, nb)
-            split_entropy = left_weight * left_entropy + right_weight * right_entropy 
-            if split_entropy < best_entropy:
-                best_split = (feature, value) 
-                best_entropy = split_entropy
+    best_entropy = 999.
+    # Column vector, we will need it to broadcast later
+    class_values = np.array(class_values).reshape((1,-1))
+    
+    for feature, values_feature in enumerate(X.T): # feature is the string naming each input feature
+        values_sorted = np.sort(values_feature)
+#         column = x[feature] # This is the array of the values
+        for index, value in enumerate(values_sorted[:-1]):
+            # LEFT PART, <= value
+            n_classes = np.sum((Y_train[X_train[:,0]<=value].reshape((-1,1)) == class_values),axis=0)
+            prob_left = np.sum(n_classes)/Y.size
+            ent_left = entropy(n_classes)
+            # RIGTH PART, > value
+            n_classes = np.sum((Y_train[X_train[:,0] > value].reshape((-1,1)) == class_values),axis=0)
+            prob_right = np.sum(n_classes)/Y.size
+            ent_right = entropy(n_classes)
+            ent_split = prob_left * ent_left + prob_right * ent_right 
+            if ent_split < best_entropy:
+                best_split = (feature, (value+values_sorted[index+1])/2) 
+                best_entropy = ent_split
     return best_split
 
-
-# %%
-def train_decision_tree(x, y, class_a_value=0, class_b_value=1):
-    feature, value = get_best_split(x, y, class_a_value=class_a_value,class_b_value=class_b_value)
-    x_left, y_left = x[x[feature] < value], y[x[feature] < value] 
-    if len(np.unique(y_left))  > 1:
-        left_node = train_decision_tree(x_left, y_left) 
+def train_decision_tree(X, Y, class_values = [0,1], min_samples_leaf=1):
+    feature, value = get_best_split(X, Y, class_values= class_values)
+    X_left, Y_left = X[X[:,feature] <= value], Y[X[:,feature] <= value]
+#     x_left, y_left = x[x[feature] < value], y[x[feature] < value] 
+    if (np.unique(Y_left).size > 1)and(Y_left.size > min_samples_leaf):
+        left_node = train_decision_tree(X_left, Y_left,class_values=class_values, min_samples_leaf=min_samples_leaf) 
     else:
         left_node = None
-    x_right, y_right = x[x[feature] >= value], y[x[feature] >= value] 
-    if len(np.unique(y_right)) > 1:
-        right_node = train_decision_tree(x_right, y_right) 
+    X_right, Y_right = X[X[:,feature] > value], Y[X[:,feature] > value]
+#     x_right, y_right = x[x[feature] >= value], y[x[feature] >= value] 
+    if (np.unique(Y_right).size > 1)and(Y_right.size > min_samples_leaf):
+        right_node = train_decision_tree(X_right, Y_right,class_values=class_values, min_samples_leaf=min_samples_leaf) 
     else:
         right_node = None
-    return Node(feature, value, left_node, right_node)
+    return NestedNode(feature, value, left_node, right_node)
 
 
 # %% [markdown]
-# Converting the data into the right type
+# Let's apply it
 
 # %%
-import pandas as pd
-df_x = pd.DataFrame({'X0':X_train[:,0],'X1':X_train[:,1]})
-
-# %%
-get_best_split(df_x,Y_train,0,1)
-
-# %%
-nodes = train_decision_tree(df_x,Y_train)
-
-# %%
-nodes
+train_decision_tree(X_train,Y_train)
 
 # %% [markdown]
 # We can compare it with the sklearn one
 
 # %%
-clf_ent = tree.DecisionTreeClassifier(criterion='entropy').fit(X_train, Y_train)
+clf_ent = sklearn.tree.DecisionTreeClassifier(criterion='entropy').fit(X_train,Y_train)
 tree_to_nodes(clf_ent)
-
-# %%
-print_cart(clf_ent)
 
 
 # %% [markdown]
@@ -349,6 +315,13 @@ print_cart(clf_ent)
 def gini(a, b): 
     ### TODO
     return gin
+
+
+# %%
+def gini(n_classes): 
+    probs = n_classes/np.sum(n_classes)
+    gini = 1-np.sum(np.power(probs,2 ) )
+    return gini
 
 
 # %% [markdown] {"heading_collapsed": true}
