@@ -11,9 +11,9 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 1. Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html
 2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation
 3. Setup the conda env from the `env.yml` file with
-    `conda env create -f env.yml`
+    `conda create -f env.yml`
 4. Activate the environment with
-    `conda activate ML_Course`
+    `conda activate ML_Course` or `source activate ML_Course` 
 5. Open Jupyter with
     `jupyter notebook`
     
@@ -21,12 +21,13 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 1. Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html
 2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation
 3. Create a new environment with
-    `conda env create -n ML_Course`
+    `conda create -n ML_Course`
 4. Activate the environment with
-    `conda activate ML_Course`
-5. Install the required packages with pip
+    `conda activate ML_Course` or `source activate ML_Course` 
+5. `conda install pip graphviz`
+6. Install the required packages with pip
     `pip install -r requirements.txt`
-6. Open Jupyter with
+7. Open Jupyter with
     `jupyter notebook`
 
 
@@ -45,5 +46,17 @@ You can find extra information about how to install Anaconda and a tutorial on [
 https://adgdt.github.io/2018-11-28-cftmat/.
 
 
+
+
+
 ## Contributing
 Contributions and issues are welcome. Thanks!
+
+## Issues
+
+### Graphviz executables not found. (Thanks to Eduardo García-Valdecasas)
+1. Download and install graphviz-2.38.msi from
+https://graphviz.gitlab.io/_pages/Download/Download_windows.html
+2. Set the path variable
+    *  Control Panel > System and Security > System > Advanced System Settings > Environment Variables > Path > Edit
+    *  add `C:\Program Files (x86)\Graphviz2.38\bin`
