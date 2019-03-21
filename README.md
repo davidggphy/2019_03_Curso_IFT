@@ -12,27 +12,31 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 ### Anaconda (Local, Load predefined env)
 1. Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html
 2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation
-3. Setup the conda env from the `env.yml` file with: 
-    `conda create -f env.yml python=3.6`
-4. Activate the environment with: 
+3. Update all the packages in conda, and itself, with: 
+    `conda update --all`
+4. Setup the conda env from the `env.yml` file with: 
+    `conda env create --file env.yml`
+5. Activate the environment with: 
     - Windows: `activate ML_Course`
     - Linux, macOS: `conda activate ML_Course` or `source activate ML_Course` 
-5. Open Jupyter with: 
+6. Open Jupyter with: 
     `jupyter notebook`
     
 ### Anaconda (Local, Install your own packages)
 1. Download miniconda ***Python 3.7*** (light version of Anaconda) from https://docs.conda.io/en/latest/miniconda.html
 2. Installation instructions in https://conda.io/projects/conda/en/latest/user-guide/install/index.html#regular-installation
-3. Create a new environment with
-    `conda create -n ML_Course python=3.6`
-4. Activate the environment with: 
+3. Update all the packages in conda, and itself, with: 
+    `conda update --all`
+4. Create a new environment with
+    `conda env create -n ML_Course python=3.6`
+5. Activate the environment with: 
     - Windows: `activate ML_Course`
     - Linux, macOS: `conda activate ML_Course` or `source activate ML_Course` 
-5. Install the following packages with conda: 
+6. Install the following packages with conda: 
     `conda install pip graphviz`
-6. Install the required packages with pip: 
+7. Install the required packages with pip: 
     `pip install -r requirements.txt`
-7. Open Jupyter with: 
+8. Open Jupyter with: 
     `jupyter notebook`
 
 
