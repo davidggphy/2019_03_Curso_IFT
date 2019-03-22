@@ -30,9 +30,9 @@ However, you can use any Python interpreter compatible with Jupyter notebooks.
 3. Update all the packages in conda, and itself, with: 
     `conda update --all`
 4. Create a new environment with
-    `conda env create -n ML_Course python=3.6`
+    `conda create -n ML_Course python=3.6`
     
-    Depending on your conda version the syntax can be instead:  `conda create -n ML_Course python=3.6`
+    Depending on your conda version the syntax can be instead:  `conda env create -n ML_Course python=3.6`
 5. Activate the environment with: 
     - Windows: `activate ML_Course`
     - Linux, macOS: `conda activate ML_Course` or `source activate ML_Course` 
