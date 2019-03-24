@@ -5,6 +5,18 @@ You can find the schedule in: http://asabiovera.wixsite.com/doctorado/advanced-1
 
 Contact email: david.gg.phy@gmail.com
 
+## Outline
+
+* Setup and basics (Days 0 and 1). [Here](/notebooks/00_intro_to_python)
+    * Installation party
+    * [Python basics](/notebooks/00_intro_to_python/00_python.ipynb)
+    * [Numpy basics](/notebooks/00_intro_to_python/01_numpy.ipynb)
+* Classification (Day 2). [Here](/notebooks/01_classification)
+    * [Decision tree from scratch](/notebooks/01_classification/00_decision_tree.ipynb) 
+    * [Classification algorithms with sklearn](notebooks/01_classification/01_classification_algorithms_sklearn.ipynb)
+* Neural Networks (Day 3)
+    * Feed forward NN from scratch
+
 ## Setup
 We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a programming environment that runs in a web browser. 
 However, you can use any Python interpreter compatible with Jupyter notebooks.
