@@ -1,4 +1,4 @@
-# A PHYSICIST'S INTRODUCTION TO MACHINE LEARNING
+# A Physicist's Introduction to Machine Learning
 Machine Learning PhD Course held at IFT (Madrid)
 
 You can find the schedule in: http://asabiovera.wixsite.com/doctorado/advanced-1
@@ -9,16 +9,18 @@ Theory sessions delivered by [Bryan Zaldivar](https://github.com/bzaldivarm). Em
 
 ## Outline of the hands-on sessions
 
-* Setup and basics (Days 0 and 1). [Here](/notebooks/00_intro_to_python)
+* Setup and basics (Days 11/03/2019 and 13/03/2019). [Here](/notebooks/00_intro_to_python)
     * Installation party
     * [Python basics](/notebooks/00_intro_to_python/00_python.ipynb)
     * [Numpy basics](/notebooks/00_intro_to_python/01_numpy.ipynb)
-* Classification (Day 2). [Here](/notebooks/01_classification)
+* Classification (Day 20/03/2019). [Here](/notebooks/01_classification)
     * [Decision tree from scratch](/notebooks/01_classification/00_decision_tree.ipynb) 
     * [Classification algorithms with sklearn](notebooks/01_classification/01_classification_algorithms_sklearn.ipynb)
-* Neural Networks (Day 3)
+* Neural Networks (Day 27/03/2019)
     * Feed forward NN from scratch
-
+* Unsupervised methods (Day to determine)
+    * Gaussian Mixture Models and EM algorithm
+    
 ## Setup
 We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a programming environment that runs in a web browser. 
 However, you can use any Python interpreter compatible with Jupyter notebooks.
