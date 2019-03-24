@@ -81,9 +81,9 @@ https://adgdt.github.io/2018-11-28-cftmat/.
 ## Contributing
 Contributions and issues are welcome. Thanks!
 
-## Issues
+### Issues
 
-### Graphviz executables not found. Windows. (Thanks to Eduardo García-Valdecasas)
+#### Graphviz executables not found. Windows. (Thanks to Eduardo García-Valdecasas)
 1. Download and install graphviz-2.38.msi from
 https://graphviz.gitlab.io/_pages/Download/Download_windows.html
 2. Set the path variable
