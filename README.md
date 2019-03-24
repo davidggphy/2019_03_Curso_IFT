@@ -5,7 +5,9 @@ You can find the schedule in: http://asabiovera.wixsite.com/doctorado/advanced-1
 
 Contact email: david.gg.phy@gmail.com
 
-## Outline
+Theory sessions delivered by [Bryan Zaldivar](https://github.com/bzaldivarm). Email: bryan.zaldivarm@uam.es
+
+## Outline of the hands-on sessions
 
 * Setup and basics (Days 0 and 1). [Here](/notebooks/00_intro_to_python)
     * Installation party
