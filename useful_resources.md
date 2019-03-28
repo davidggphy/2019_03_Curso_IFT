@@ -45,3 +45,7 @@
 * Gaussian processes for regression demo ([Toma Peltola](http://www.tmpl.fi/))
 
   http://www.tmpl.fi/gp/
+  
+* Seven Myths in Machine Learning Research [arxiv](https://arxiv.org/abs/1902.06789)
+
+  https://crazyoscarchang.github.io/2019/02/16/seven-myths-in-machine-learning-research/
