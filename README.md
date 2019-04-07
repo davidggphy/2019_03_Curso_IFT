@@ -1,7 +1,7 @@
 # A Physicist's Introduction to Machine Learning
 Machine Learning PhD Course held at IFT (Madrid)
 
-You can find the schedule in: http://asabiovera.wixsite.com/doctorado/advanced-1
+You can find the schedule in: https://moseranette.wixsite.com/doctorado/advanced-1
 
 Contact email: david.gg.phy@gmail.com
 
