@@ -5,7 +5,6 @@ attrs==18.2.0
 autopep8==1.4.3
 backcall==0.1.0
 bleach==3.1.0
-bokeh==1.0.4
 certifi==2018.11.29
 cycler==0.10.0
 decorator==4.3.2
@@ -34,9 +33,6 @@ jupyter-latex-envs==1.4.6
 jupyter-nbextensions-configurator==0.4.1
 jupyterthemes==0.20.0
 jupytext==1.0.1
-Keras==2.2.4
-Keras-Applications==1.0.7
-Keras-Preprocessing==1.0.9
 kiwisolver==1.0.1
 lesscpy==0.13.0
 lxml==4.3.2
@@ -48,7 +44,7 @@ mizani==0.5.3
 mock==2.0.0
 nbconvert==5.4.1
 nbformat==4.4.0
-notebook==5.7.4
+notebook>=5.7.8
 numpy==1.16.2
 packaging==19.0
 palettable==3.1.1

@@ -1,7 +1,7 @@
 # A Physicist's Introduction to Machine Learning
 Machine Learning PhD Course held at IFT (Madrid)
 
-You can find the schedule in: http://asabiovera.wixsite.com/doctorado/advanced-1
+You can find the schedule in: https://moseranette.wixsite.com/doctorado/advanced-1
 
 Contact email: david.gg.phy@gmail.com
 
@@ -17,9 +17,10 @@ Theory sessions delivered by [Bryan Zaldivar](https://github.com/bzaldivarm). Em
     * [Decision tree from scratch](/notebooks/01_classification/00_decision_tree.ipynb) 
     * [Classification algorithms with sklearn](notebooks/01_classification/01_classification_algorithms_sklearn.ipynb)
 * Neural Networks (Day 27/03/2019)
-    * Feed forward NN from scratch
-* Unsupervised methods (Day to determine)
+    * [Feed forward NN from scratch](/notebooks/02_neural_networks/00_neural_network_from_scratch.ipynb) 
+* Unsupervised methods (Day 08/04/2019)
     * Gaussian Mixture Models and EM algorithm
+    * Principal Component Analysis
     
 ## Setup
 We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a programming environment that runs in a web browser. 
