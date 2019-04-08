@@ -15,12 +15,12 @@ Theory sessions delivered by [Bryan Zaldivar](https://github.com/bzaldivarm). Em
     * [Numpy basics](/notebooks/00_intro_to_python/01_numpy.ipynb)
 * Classification (Day 20/03/2019). [Here](/notebooks/01_classification)
     * [Decision tree from scratch](/notebooks/01_classification/00_decision_tree.ipynb) 
-    * [Classification algorithms with sklearn](notebooks/01_classification/01_classification_algorithms_sklearn.ipynb)
-* Neural Networks (Day 27/03/2019)
+    * [Classification algorithms with sklearn](/notebooks/01_classification/01_classification_algorithms_sklearn.ipynb)
+* Neural Networks (Day 27/03/2019). [Here](/notebooks/02_neural_networks)
     * [Feed forward NN from scratch](/notebooks/02_neural_networks/00_neural_network_from_scratch.ipynb) 
-* Unsupervised methods (Day 08/04/2019)
-    * Gaussian Mixture Models and EM algorithm
-    * Principal Component Analysis
+* Unsupervised methods (Day 08/04/2019). [Here](/notebooks/03_unsupervised/)
+    * [Gaussian Mixture Models and EM algorithm](/notebooks/03_unsupervised/00_EM_GMM.ipynb)
+    * [Principal Component Analysis](/notebooks/03_unsupervised/01_PCA.ipynb)
     
 ## Setup
 We will teach Python using the [Jupyter](https://jupyter.org/) notebook, a programming environment that runs in a web browser. 
@@ -74,9 +74,6 @@ Here's how you can use it:
 ## Warm-up
 You can find extra information about how to install Anaconda and a tutorial on [python basics](https://adgdt.github.io/2018-11-28-cftmat-python-novice-inflammation) in
 https://adgdt.github.io/2018-11-28-cftmat/.
-
-
-
 
 
 ## Contributing
