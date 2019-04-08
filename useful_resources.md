@@ -49,3 +49,7 @@
 * Seven Myths in Machine Learning Research [arxiv](https://arxiv.org/abs/1902.06789)
 
   https://crazyoscarchang.github.io/2019/02/16/seven-myths-in-machine-learning-research/
+  
+* Bayesian Methods for Hackers. An introduction to Bayesian methods + probabilistic programming in Python
+
+  https://github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers
