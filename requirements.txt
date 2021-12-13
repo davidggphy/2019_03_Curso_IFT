@@ -42,7 +42,7 @@ jupyterthemes==0.20.0
 jupytext==1.6.0
 kiwisolver==1.2.0
 lesscpy==0.14.0
-lxml==4.5.2
+lxml==4.6.5
 Markdown==3.2.2
 markdown-it-py==0.5.4
 MarkupSafe==1.1.1
